@@ -3,14 +3,14 @@ import { ChangeEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CardComp from './CardComp';
 import { inputBox, inputButton, playVideoBox, searchBox, searchVideoBox } from './Styles';
-import { fetchSearchVideos, setQuery } from './slices/searchSlice';
+import { fetchSearchVideos } from './slices/searchSlice';
 import { AppDispatch, RootState } from './store';
 
 function SearchPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const query = useSelector((state: RootState) => state.searchVideos.query);
   const videos = useSelector((state: RootState) => state.searchVideos.items);
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
+  const [query, setQuery] = useState<string>("");
 
   const handleSearch = () => {
     if (query.trim()) {
@@ -19,7 +19,7 @@ function SearchPage() {
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setQuery(e.target.value));
+    setQuery(e.target.value);
   };
 
   const handleVideoClick = (id: string) => {

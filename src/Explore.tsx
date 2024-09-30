@@ -9,14 +9,11 @@ import { playVideoBox, videoBox } from './Styles';
 function ExplorePage() {
   const dispatch = useDispatch<AppDispatch>();
   const videos = useSelector((state: RootState) => state.exploreVideos.items);
-  const videoStatus = useSelector((state: RootState) => state.exploreVideos.status);
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (videoStatus === 'idle') {
-      dispatch(fetchExploreVideos());
-    }
-  }, [videoStatus, dispatch]);
+      dispatch(fetchExploreVideos('redux'));
+  }, []);
 
   const handleVideoClick = (id: string) => {
     setSelectedVideoId(id);

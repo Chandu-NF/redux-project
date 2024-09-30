@@ -10,14 +10,11 @@ import { AppDispatch, RootState } from './store';
 function HomePage() {
   const dispatch = useDispatch<AppDispatch>();
   const videos = useSelector((state: RootState) => state.videos.items);
-  const videoStatus = useSelector((state: RootState) => state.videos.status);
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (videoStatus === 'idle') {
-      dispatch(fetchVideos());
-    }
-  }, [videoStatus, dispatch]);
+  useEffect(() =>  {
+      dispatch(fetchVideos('mostPopular'));
+  }, []);
 
   const handleVideoClick = (id: string) => {
     setSelectedVideoId(id);
