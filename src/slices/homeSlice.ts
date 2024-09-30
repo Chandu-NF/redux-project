@@ -30,10 +30,10 @@ export const fetchVideos = createAsyncThunk('videos/fetchVideos',
     return response.data.items;
   }catch(error:any){
     if (error.response && error.response.data){
-      return thunkAPI.rejectWithValue(error.response.data)
+      console.log(error.response)
+      return thunkAPI.rejectWithValue(error.response.data.error.message)
     }
   }
-  
 });
 
 const videoSlice = createSlice({

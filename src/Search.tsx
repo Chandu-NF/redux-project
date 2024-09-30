@@ -1,20 +1,28 @@
-import { Box, Button, Input, Modal } from '@mui/joy';
+import { Box, Button, Input, Modal, Typography } from '@mui/joy';
 import { ChangeEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CardComp from './CardComp';
-import { inputBox, inputButton, playVideoBox, searchBox, searchVideoBox } from './Styles';
+import { errorHandling, inputBox, inputButton, playVideoBox, searchBox, searchVideoBox } from './Styles';
+import VideoProp from './slices/Types';
 import { fetchSearchVideos } from './slices/searchSlice';
 import { AppDispatch, RootState } from './store';
 
 function SearchPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const videos = useSelector((state: RootState) => state.searchVideos.items);
+  const videos: VideoProp[] = useSelector((state: RootState) => state.searchVideos.items);
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
   const [query, setQuery] = useState<string>("");
+  const [error, setError] = useState<string>();
 
   const handleSearch = () => {
     if (query.trim()) {
-      dispatch(fetchSearchVideos(query));
+      dispatch(fetchSearchVideos(query)).then((res)=> {
+        if(res.meta.requestStatus === 'rejected'){
+          setError(res.payload)
+        }else{
+          setError(undefined)
+        }
+      });
     }
   };
 
@@ -53,6 +61,8 @@ function SearchPage() {
           />
         ))}
       </Box>
+
+      {error && <Typography sx={errorHandling} color='danger' level='h1' >{"Error Fetching Data...."}</Typography>}
 
       <Modal open={!!selectedVideoId} onClose={handleCloseModal}>
         <Box sx={playVideoBox}>

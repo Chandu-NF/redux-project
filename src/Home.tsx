@@ -1,4 +1,4 @@
-import { Box, Modal } from '@mui/joy';
+import { Box, Modal, Typography } from '@mui/joy';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CardComp from './CardComp';
@@ -11,10 +11,17 @@ function HomePage() {
   const dispatch = useDispatch<AppDispatch>();
   const videos = useSelector((state: RootState) => state.videos.items);
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
+  const [error, setError] = useState<string>();
 
   useEffect(() =>  {
-      dispatch(fetchVideos('mostPopular'));
-  }, []);
+      dispatch(fetchVideos('mostPopular')).then((res)=> {
+        if(res.meta.requestStatus === 'rejected'){
+          setError(res.payload)
+        }else{
+          setError(undefined)
+        }
+      });
+  }, [])
 
   const handleVideoClick = (id: string) => {
     setSelectedVideoId(id);
@@ -29,6 +36,9 @@ function HomePage() {
       {videos?.map((video) => (
         <CardComp key={video.id.videoId} vid={video} onClick={handleVideoClick} />
       ))}
+
+      {error && <Typography color='danger' level='h1'>{"Error Fetching Data...."}</Typography>}
+
       <Modal open={!!selectedVideoId} onClose={handleCloseModal}>
         <Box sx={playVideoBox}>
           {selectedVideoId && (
