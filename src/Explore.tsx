@@ -1,4 +1,4 @@
-import { Box, Modal } from '@mui/joy';
+import { Box, Modal, Typography } from '@mui/joy';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CardComp from './CardComp';
@@ -9,14 +9,18 @@ import { playVideoBox, videoBox } from './Styles';
 function ExplorePage() {
   const dispatch = useDispatch<AppDispatch>();
   const videos = useSelector((state: RootState) => state.exploreVideos.items);
-  const videoStatus = useSelector((state: RootState) => state.exploreVideos.status);
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
-    if (videoStatus === 'idle') {
-      dispatch(fetchExploreVideos());
-    }
-  }, [videoStatus, dispatch]);
+      dispatch(fetchExploreVideos('redux')).then((res)=> {
+        if(res.meta.requestStatus === 'rejected'){
+          setError(res.payload)
+        }else{
+          setError(undefined)
+        }
+      });
+  }, []);
 
   const handleVideoClick = (id: string) => {
     setSelectedVideoId(id);
@@ -35,6 +39,8 @@ function ExplorePage() {
           onClick={() => handleVideoClick(video.id.videoId)}
         />
       ))}
+
+      {error && <Typography  color='danger' level='h1'>{"Error Fetching Data....."}</Typography>}
 
       <Modal open={!!selectedVideoId} onClose={handleCloseModal}>
         <Box sx={playVideoBox}>

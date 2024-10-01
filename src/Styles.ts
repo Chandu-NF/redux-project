@@ -189,3 +189,8 @@ export const cardStyle: SxProps = {
     height: "30px", 
     marginRight: "8px"
   }
+
+  export const errorHandling: SxProps = {
+    justifyContent: 'center', 
+    textAlign:'center',
+  }
