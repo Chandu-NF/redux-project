@@ -10,7 +10,7 @@ interface VideoState {
 
 const initialState: VideoState = {
   items: [],
-  loading: true
+  loading: false
 };
 
 export const fetchVideos = createAsyncThunk('videos/fetchVideos', 

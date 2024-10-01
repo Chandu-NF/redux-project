@@ -10,7 +10,7 @@ interface ExploreVideoState {
 
 const initialState: ExploreVideoState = {
   items: [],
-  loading: true,
+  loading: false,
 };
 
 export const fetchExploreVideos = createAsyncThunk(

@@ -10,7 +10,7 @@ interface SearchVideoState {
 
 const initialState: SearchVideoState = {
   items: [],
-  loading: true,
+  loading: false,
 };
 
 export const fetchSearchVideos = createAsyncThunk(

@@ -6,7 +6,6 @@ import { playVideoBox, videoBox } from './Styles';
 import { fetchVideos } from './slices/homeSlice';
 import { AppDispatch, RootState } from './store';
 
-
 function HomePage() {
   const dispatch = useDispatch<AppDispatch>();
   const videos = useSelector((state: RootState) => state.videos.items);
@@ -32,6 +31,7 @@ function HomePage() {
   };
 
   return (
+    
     <Box sx={videoBox}>
       {videos?.map((video) => (
         <CardComp key={video.id.videoId} vid={video} onClick={handleVideoClick} />
